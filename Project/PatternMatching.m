@@ -45,3 +45,47 @@ candidate_image_normalized = (b-min(b(:)))/(max(b(:))-min(b(:)));
 template_image_normalized = (bi-min(bi(:)))/(max(bi(:))-min(bi(:)));
 two_images_normalized = normxcorr2(candidate_image_normalized,template_image_normalized);
 %2nd way to normalize
+
+%3rd way to normalize
+x = b;
+y = bi;
+sum = 0;
+next = 0;
+next_y = 0;
+nex = 0;
+nex_y = 0;
+sum_of_nex = 0;
+sum_of_nex_y = 0;
+
+for n = 1 : length(x)
+
+  for k = 1 : x(n)
+    next = k;
+  end
+  for k_1 = 1 : y(n)
+    next_y = k_1;
+  end
+  
+  multiply = next * next_y;
+  
+  sum = sum + multiply;
+end
+
+
+for n = 1 : length(x)
+
+  for k = 1 : x(n)
+    nex = k*k;
+  end
+  for k_1 = 1 : y(n)
+    nex_y = k_1 * k_1;
+  end
+  sum_of_nex = sum_of_nex+nex;
+  sum_of_nex_y = sum_of_nex_y + nex_y;
+end
+
+ino = sum_of_nex * sum_of_nex_y;
+norm_den = sqrt(ino);
+
+norm_corr = sum / norm_den;
+%3rd way to normalize
