@@ -14,11 +14,11 @@ ct = rgb2gray(ImageR);
 t = graythresh(c);
 ty = graythresh(ct);
 
-bil = im2bw(c, t);
-b = not(bil);
+b = im2bw(c, t);
+%b = not(bil);
 imshow(b);
-bit = im2bw(ct, ty);
-bi = not(bit);
+bi = im2bw(ct, ty);
+%bi = not(bit);
 figure(), imshow(bi);
 %c1 = 1/100*sum{[b(10)-mean(b)]*[bi(10)-mean(bi)]}/(sqrt(var(b)*var(bi)));
 
@@ -27,6 +27,14 @@ figure(), imshow(bi);
 c = normxcorr2(b,bi);
 figure, surf(c), shading flat;
 %ist way to normalize
+
+[ypeak, xpeak] = find(c==max(c(:)));
+yoffSet = ypeak-size(b,1);
+xoffSet = xpeak-size(b,2);
+hFig = figure;
+hAx  = axes;
+imshow(bi,'Parent', hAx);
+imrect(hAx, [xoffSet, yoffSet, size(b,2), size(b,1)]);
 
 %lm = mean(b);
 %lm1 = mean(bi);
@@ -47,18 +55,13 @@ two_images_normalized = normxcorr2(candidate_image_normalized,template_image_nor
 %2nd way to normalize
 
 %3rd way to normalize
-numpokes = cell(1,1);
-x = b;
-y = bi;
+x = double(b);
+y = double(bi);
 sum = 0;
-next = 0;
-next_y = 0;
-nex = 0;
-nex_y = 0;
 sum_of_nex = 0;
 sum_of_nex_y = 0;
 
-for n = 1 : length(x)
+for n = 1 : length(y)
 
   for k = 1 : x(n)
     next = k;
@@ -73,7 +76,7 @@ for n = 1 : length(x)
 end
 
 
-for n = 1 : length(x)
+for n = 1 : length(y)
 
   for k = 1 : x(n)
     nex = k*k;
@@ -89,4 +92,17 @@ ino = sum_of_nex * sum_of_nex_y;
 norm_den = sqrt(ino);
 
 norm_corr = sum / norm_den;
+%figure, surf(norm_corr), shading flat;
 %3rd way to normalize
+
+[ypeak, xpeak] = find(norm_corr==max(norm_corr(:)));
+yoffSet = ypeak-size(b,1);
+xoffSet = xpeak-size(b,2);
+hFig = figure;
+hAx  = axes;
+imshow(bi,'Parent', hAx);
+imrect(hAx, [xoffSet, yoffSet, size(b,2), size(b,1)]);
+
+len = length(x);
+
+Normalised_CrossCorr = 1/len * sum{ [x(len) - mean(x)]* [y(len) - mean(y)] }/ (sqrt(var(x)*var(y)));

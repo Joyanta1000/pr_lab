@@ -8,21 +8,27 @@ ImageRead = imread('D:\Last Semester\PR\PR lab\Patterns\new (times new roman)\4_
 ImageR = imread('D:\Last Semester\PR\PR lab\Patterns\new (times new roman)\Template_1.jpg');
 %ImageS = imshow(ImageR);
 
-c = rgb2gray(ImageRead);
+cit = rgb2gray(ImageRead);
 ct = rgb2gray(ImageR);
 
-t = graythresh(c);
+t = graythresh(cit);
 ty = graythresh(ct);
 
-bil = im2bw(c, t);
+bil = im2bw(cit, t);
 b = not(bil);
 imshow(b);
 bit = im2bw(ct, ty);
 bi = not(bit);
 figure(), imshow(bi);
 c = normxcorr2(b,bi);
-figure, surf(c), shading flat
+%figure, surf(c), shading flat
 [ypeak, xpeak] = find(c==max(c(:)));
+
+%checking sizes
+tr = size(b,1);
+tr_1 = size(b,2);
+%checking sizes
+
 yoffSet = ypeak-size(b,1);
 xoffSet = xpeak-size(b,2);
 hFig = figure;
